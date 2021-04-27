@@ -13,7 +13,6 @@ import kotlin.reflect.full.hasAnnotation
 class ImplVisitor() : Visitor {
     val myjson = JsonParse()
 
-    //return strings
     override fun getStrings(st: Student): String {
         val clazz: KClass<Any> = st::class as KClass<Any>
         var propertyKeyAndValue = ""
@@ -74,10 +73,6 @@ class ImplVisitor() : Visitor {
 
         return propertyKeyAndValue
     }
-
-    /* override fun createModelJson(any: Any): JsonObject {
-         return JsonObject()
-     }*/
 
     override fun getObjetsByProperties(st: Student, propertie: String): String {
         val clazz: KClass<Any> = st::class as KClass<Any>

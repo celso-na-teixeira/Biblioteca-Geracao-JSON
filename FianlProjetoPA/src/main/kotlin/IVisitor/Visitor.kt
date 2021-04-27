@@ -12,5 +12,4 @@ interface Visitor {
 
     fun getObjetsByProperties(les: Lesson, propertie: String): String
 
-    /*fun createModelJson(any : Any) : JsonObject*/
 }

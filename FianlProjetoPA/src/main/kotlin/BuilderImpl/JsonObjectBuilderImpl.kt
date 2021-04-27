@@ -37,10 +37,10 @@ class JsonObjectBuilderImpl : JsonObjectBuilder {
 
     override fun build(): JsonObject {
         val sp : Map<String, JsonValue> = HashMap(this.valueMap)
-        return JsonObjectBuilderImpl.JsonObjectImpl(sp)
+        return JsonObjectImpl(sp)
     }
 
-         final class JsonObjectImpl : AbstractMap<String, JsonValue>, JsonObject {
+         class JsonObjectImpl : AbstractMap<String, JsonValue>, JsonObject {
 
              private val valueMap : Map<String, JsonValue>
 

@@ -20,8 +20,4 @@ class JsonObject : Visitable {
         TODO("Not yet implemented")
     }
 
-    /*  override fun createModel(visitor: Visitor): JsonObject {
-          return visitor.createModelJson(this);
-      }*/
-
 }

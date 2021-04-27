@@ -14,7 +14,6 @@ abstract class JsonProvider {
     companion object{
         fun provider() : JsonProvider{
             val clazz = JsonProviderImpl::class
-
             return clazz.createInstance()
         }
     }

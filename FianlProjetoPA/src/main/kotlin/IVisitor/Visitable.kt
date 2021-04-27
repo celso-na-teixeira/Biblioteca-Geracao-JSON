@@ -5,5 +5,4 @@ interface Visitable {
 
     fun getObjetsByProperties(visitor: Visitor, propertie: String): String
 
-    /*fun createModel(visitor : Visitor) : JsonObject*/
 }

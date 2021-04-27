@@ -25,7 +25,7 @@ fun main() {
    // println(teste.parse(student))
 
     val model = Json.createObjectBuilder().add(lesson.name, lesson.lessonDate.toString()).build()
-
-    println(model)
+    val model2 = Json.createArrayBuilder().add(Json.createObjectBuilder().add(lesson.name, lesson.lessonDate.toString())).build()
+    println(model2)
 
 }
