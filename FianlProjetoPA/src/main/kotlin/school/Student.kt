@@ -1,6 +1,5 @@
 package school
 
-import IVisitor.Visitable
 import IVisitor.Visitor
 import JsonAnnotation
 
@@ -10,7 +9,7 @@ class Student(
     nam: String,
     typ: StudentType,
     oneLess: Lesson
-) : Visitable {
+)  {
 
     val number: Int
     val name: String
@@ -28,19 +27,6 @@ class Student(
         type = typ
         oneLesson = oneLess
     }
-
-    override fun getStrings(visitor: Visitor): String {
-        return visitor.getStrings(this)
-    }
-
-    override fun getObjetsByProperties(visitor: Visitor, propertie: String): String {
-        return visitor.getObjetsByProperties(this, propertie)
-    }
-
-    /*  override fun createModel(visitor: Visitor): JsonObject {
-          TODO("Not yet implemented")
-      }*/
-
 
     override fun toString(): String {
         return super.toString()

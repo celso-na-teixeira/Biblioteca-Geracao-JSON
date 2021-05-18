@@ -1,5 +1,4 @@
-import IVisitor.Json
-import ImplVisitor.ImplVisitor
+import school.ClassRoom
 import school.Lesson
 import school.Student
 import school.StudentType
@@ -9,23 +8,34 @@ class MainClass
 
 fun main() {
 
-    val lesson = Lesson(name = "PA", lessonDate = Date())
-    val lesson2 = Lesson(name = "MAT", lessonDate = Date())
-    val lesson3 = Lesson(name = "HIST", lessonDate = Date())
+    val lesson = Lesson(name = "PA", 1)
+    val lesson2 = Lesson(name = "MAT", 2)
+    val lesson3 = Lesson(name = "HIST", 3)
     val student = Student(numb = 1, nam = "Alberto", typ = StudentType.Bachelor, lesson)
+
+    val items = HashMap<String, Int>()
+    items["A"] = 10
+    items["B"] = 20
+    items["C"] = 30
+
+    val room = ClassRoom(items)
 
     student.mylessons.add(lesson3)
     student.mylessons.add(lesson2)
 
-    println(Date().toString())
-    val impl = ImplVisitor()
-    val teste = JsonParse()
-    val tete2 = "Teste"
 
-   // println(teste.parse(student))
+    var test = Reflex()
+    var model3 = test.reflectionInference(student)
+    //model3.getMap().forEach { t, u -> }
+    println(model3)
+    //teste(StudentType.Bachelor)
+    //TreeSkeleton().open(model3)
 
-    val model = Json.createObjectBuilder().add(lesson.name, lesson.lessonDate.toString()).build()
-    val model2 = Json.createArrayBuilder().add(Json.createObjectBuilder().add(lesson.name, lesson.lessonDate.toString())).build()
-    println(model2)
+    val map = test.getAllStrings(student)
+
+    map.forEach { t -> println(t) }
+
 
 }
+
+

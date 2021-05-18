@@ -7,6 +7,12 @@ interface JsonObjectBuilder {
 
     fun add(str : String, number : Int) : JsonObjectBuilder
 
+    fun add(str : String, number: Double) : JsonObjectBuilder
+
+    fun add(str : String, var1: Boolean) : JsonObjectBuilder
+
+    fun add(str : String, enum: Enum<*>) : JsonObjectBuilder
+
     fun addNull(str : String) : JsonObjectBuilder
 
     fun build() : JsonObject

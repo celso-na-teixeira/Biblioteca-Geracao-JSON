@@ -1,15 +1,18 @@
 package IVisitor
 
+import BuilderImpl.JsonArrayBuilderImpl
+import BuilderImpl.JsonObjectBuilderImpl
 import school.Lesson
 import school.Student
 
 interface Visitor {
-    fun getStrings(st: Student): String
+    fun visit(var1 : JsonObject) : Boolean = true
+    fun endVisit(c: JsonObject)
 
-    fun getStrings(les: Lesson): String
+    fun visit(var1 : JsonArray) : Boolean = true
+    fun endVisit(c: JsonArray)
 
-    fun getObjetsByProperties(st: Student, propertie: String): String
-
-    fun getObjetsByProperties(les: Lesson, propertie: String): String
-
+    fun visit(var1 : JsonString)
+    fun visit(var1 : JsonNumber)
+    fun visit(var1 : JsonValue)
 }

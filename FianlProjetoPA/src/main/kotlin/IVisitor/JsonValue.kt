@@ -1,8 +1,11 @@
 package IVisitor
 
-interface JsonValue {
+interface JsonValue  {
     companion object {
         val NULL: JsonValue = object : JsonValue {
+            override fun accept(v: Visitor) {
+                TODO("Not yet implemented")
+            }
 
             override fun getValueType(): JsonValue.ValueType = JsonValue.ValueType.NULL
 
@@ -21,6 +24,9 @@ interface JsonValue {
         }
 
         val TRUE: JsonValue = object : JsonValue {
+            override fun accept(v: Visitor) {
+                v.visit(this)
+            }
 
             override fun getValueType(): JsonValue.ValueType = JsonValue.ValueType.TRUE
 
@@ -39,6 +45,9 @@ interface JsonValue {
         }
 
         val FALSE: JsonValue = object : JsonValue {
+            override fun accept(v: Visitor) {
+                v.visit(this)
+            }
 
             override fun getValueType(): JsonValue.ValueType = JsonValue.ValueType.FALSE
 
@@ -57,11 +66,9 @@ interface JsonValue {
         }
     }
 
-   // fun getValueType() : JsonValue.ValueType = JsonValue.ValueType.NULL
+    fun accept(v : Visitor)
 
     fun getValueType() : JsonValue.ValueType
-
-    override fun toString(): String //todo(remove later)
 
     enum class ValueType {
         ARRAY,

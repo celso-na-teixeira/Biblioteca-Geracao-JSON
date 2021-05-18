@@ -6,6 +6,8 @@ class JsonArrayBuilderImpl : JsonArrayBuilder {
 
     val listValue = mutableListOf<JsonValue>()
 
+    constructor()
+
     override fun add(jsonValue: JsonValue): JsonArrayBuilder {
         this.listValue.add(jsonValue)
         return this
@@ -50,7 +52,7 @@ class JsonArrayBuilderImpl : JsonArrayBuilder {
 
     }
 
-    private class JsonArrayImpl : AbstractList<JsonValue>, JsonArray{
+    private class JsonArrayImpl : AbstractList<JsonValue>, JsonArray {
 
         private val valueList : List<JsonValue>
 
@@ -84,5 +86,15 @@ class JsonArrayBuilderImpl : JsonArrayBuilder {
 
         override val size: Int
             get() = this.valueList.size
+
+        override fun accept(v: Visitor) {
+           // if (v.visit(this))
+                valueList.forEach {
+                    it.accept(v)
+                }
+            return v.endVisit(this)
+        }
     }
+
+
 }
