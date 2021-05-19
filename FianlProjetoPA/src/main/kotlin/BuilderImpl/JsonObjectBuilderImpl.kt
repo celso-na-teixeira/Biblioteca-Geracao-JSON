@@ -4,8 +4,7 @@ import IVisitor.*
 
 class JsonObjectBuilderImpl : JsonObjectBuilder {
     private val valueMap = mutableMapOf<String, JsonValue>()
-
-    constructor()
+    
     override fun add(str: String, jsonValue: JsonValue): JsonObjectBuilder {
         this.valueMap.put(str, jsonValue)
         return this
@@ -36,13 +35,6 @@ class JsonObjectBuilderImpl : JsonObjectBuilder {
         return this
     }
 
-
-    fun convert(map: MutableMap<*, *>) : Map<String, JsonValue>{
-        val newMap = JsonObjectBuilderImpl()
-
-        return newMap.valueMap
-    }
-
     override fun add(str: String, jsonObjectBuilder: JsonObjectBuilder): JsonObjectBuilder {
         this.valueMap.put(str, jsonObjectBuilder.build())
         return this
@@ -64,7 +56,7 @@ class JsonObjectBuilderImpl : JsonObjectBuilder {
         return JsonObjectImpl(sp)
     }
 
-         class JsonObjectImpl : JsonObject {
+         class JsonObjectImpl : AbstractMap<String, JsonValue>, JsonObject {
 
              val valueMap : Map<String, JsonValue>
 
@@ -78,34 +70,37 @@ class JsonObjectBuilderImpl : JsonObjectBuilder {
              }
 
 
-             override fun getJsonArray(var1: String): JsonArray {
-                 return valueMap.get(var1) as JsonArray
+             override fun getJsonArray(str: String): JsonArray {
+                 return valueMap.get(str) as JsonArray
              }
 
 
-             override fun getJsonObject(var1: String): JsonObject {
-                 return valueMap.get(var1) as JsonObject
+             override fun getJsonObject(str: String): JsonObject {
+                 return valueMap.get(str) as JsonObject
              }
 
              override fun getJsonObject(): JsonObject {
                  return valueMap as JsonObject
              }
 
-             override fun getJsonNumber(var1: String): JsonNumber {
-                 return valueMap.get(var1) as JsonNumber
+             override fun getJsonNumber(str: String): JsonNumber {
+                 return valueMap.get(str) as JsonNumber
              }
 
-             override fun getJsonString(var1: String): JsonString {
-                 return valueMap.get(var1) as JsonString
+             override fun getJsonString(str: String): JsonString {
+                 return valueMap.get(str) as JsonString
              }
 
              override fun getValueType(): JsonValue.ValueType {
                  return JsonValue.ValueType.OBJECT
              }
 
+             override val entries: Set<Map.Entry<String, JsonValue>>
+                 get() = this.valueMap.entries
+
              override fun accept(v: Visitor) {
-                 //if(v.visit(this))
-                     valueMap.forEach{
+                 if(v.visit(this))
+                     this.valueMap.forEach{
                          it.value.accept(v)
                      }
                  v.endVisit(this)

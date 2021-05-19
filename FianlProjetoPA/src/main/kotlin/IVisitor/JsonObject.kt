@@ -1,6 +1,6 @@
 package IVisitor
 
-interface JsonObject : JsonStructure{
+interface JsonObject : JsonStructure, Map<String, JsonValue>{
 
     fun getJsonArray(str : String) : JsonArray
 

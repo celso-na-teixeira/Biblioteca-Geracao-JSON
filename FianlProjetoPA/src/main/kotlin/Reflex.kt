@@ -7,7 +7,7 @@ import kotlin.reflect.full.hasAnnotation
 class Reflex {
     //create model
     fun reflectionInference(o: Any) : JsonObject {
-        var model = Json.createObjectBuilder()
+        val model = Json.createObjectBuilder()
         var modelArr : JsonArrayBuilder
         val clazz: KClass<Any> = o::class as KClass<Any>
 
@@ -15,7 +15,7 @@ class Reflex {
             if(it.hasAnnotation<JsonAnnotation.AttributeObject>()){
                 model.add(it.name, reflectionInference(it.call(o)!!))
             }else if (it.hasAnnotation<JsonAnnotation.AttributeArray>()){
-                var arr = it.call(o) as Collection<Any>
+                val arr = it.call(o) as Collection<Any>
                 modelArr = Json.createArrayBuilder()
                 arr.forEach{ ar ->
                     modelArr.add(reflectionInference(ar))
@@ -24,7 +24,7 @@ class Reflex {
             }
             else{
                 if(it.call(o) is String){
-                    var teste = it.call(o) as String
+                    val teste = it.call(o) as String
                     model.add(it.name, teste)
                 }else if (it.call(o) is Int){
                     model.add(it.name,it.call(o) as Int)
@@ -41,16 +41,6 @@ class Reflex {
 
         val visitor = object : Visitor {
             val map = mutableListOf<String>()
-
-            override fun visit(var1: JsonObject) : Boolean  {
-
-              return true
-            }
-
-            override fun visit(var1: JsonArray) : Boolean  {
-
-                return true
-            }
 
             override fun visit(var1: JsonString) {
                 map.add(var1.getString())
@@ -71,10 +61,54 @@ class Reflex {
             }
         }
 
-        val model = reflectionInference(0)
+        val model = reflectionInference(o)
 
         model.accept(visitor)
     return visitor.map
+    }
+    fun getAllContains(o: Any, name : String) : List<Any>{
+
+        val visitor = object : Visitor {
+            val map = mutableListOf<Any>()
+
+            override fun visit(var1: JsonString) {
+            }
+
+            override fun visit(var1: JsonNumber) {
+
+            }
+
+            override fun visit(var1: JsonValue) {
+            }
+            override fun visit(var1 : JsonObject) : Boolean{
+                var1.getMap().forEach{
+                    if (JsonValue.ValueType.OBJECT.equals(it.value.getValueType()) &&  it.key.contains(name)) {
+                        map.add(it)
+                    }
+
+                }
+                return true
+            }
+            override fun visit(var1 : JsonArray) : Boolean{
+                /*var1.forEach {
+                    if (JsonValue.ValueType.OBJECT.equals(it.getValueType()))
+                        map.add(it)
+                }*/
+                return true
+            }
+
+
+            override fun endVisit(c: JsonObject) {
+            }
+
+            override fun endVisit(c: JsonArray) {
+            }
+        }
+
+        val model = reflectionInference(o)
+
+        model.accept(visitor)
+        return visitor.map
     }
 
 

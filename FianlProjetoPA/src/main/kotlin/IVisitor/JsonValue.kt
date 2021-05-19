@@ -4,10 +4,10 @@ interface JsonValue  {
     companion object {
         val NULL: JsonValue = object : JsonValue {
             override fun accept(v: Visitor) {
-                TODO("Not yet implemented")
+                v.visit(this)
             }
 
-            override fun getValueType(): JsonValue.ValueType = JsonValue.ValueType.NULL
+            override fun getValueType(): ValueType = JsonValue.ValueType.NULL
 
             override fun toString(): String {
                 return "null"
@@ -19,7 +19,7 @@ interface JsonValue  {
 
             override fun equals(other: Any?): Boolean {
                 return if (other is JsonValue) this.getValueType()
-                    .equals((other as JsonValue).getValueType()) else false
+                    .equals((other).getValueType()) else false
             }
         }
 
@@ -28,7 +28,7 @@ interface JsonValue  {
                 v.visit(this)
             }
 
-            override fun getValueType(): JsonValue.ValueType = JsonValue.ValueType.TRUE
+            override fun getValueType(): ValueType = JsonValue.ValueType.TRUE
 
             override fun toString(): String {
                 return "true"
@@ -40,7 +40,7 @@ interface JsonValue  {
 
             override fun equals(other: Any?): Boolean {
                 return if (other is JsonValue) this.getValueType()
-                    .equals((other as JsonValue).getValueType()) else false
+                    .equals(other.getValueType()) else false
             }
         }
 
@@ -49,7 +49,7 @@ interface JsonValue  {
                 v.visit(this)
             }
 
-            override fun getValueType(): JsonValue.ValueType = JsonValue.ValueType.FALSE
+            override fun getValueType(): ValueType = JsonValue.ValueType.FALSE
 
             override fun toString(): String {
                 return "false"
@@ -61,14 +61,14 @@ interface JsonValue  {
 
             override fun equals(other: Any?): Boolean {
                 return if (other is JsonValue) this.getValueType()
-                    .equals((other as JsonValue).getValueType()) else false
+                    .equals(other.getValueType()) else false
             }
         }
     }
 
     fun accept(v : Visitor)
 
-    fun getValueType() : JsonValue.ValueType
+    fun getValueType() : ValueType
 
     enum class ValueType {
         ARRAY,
