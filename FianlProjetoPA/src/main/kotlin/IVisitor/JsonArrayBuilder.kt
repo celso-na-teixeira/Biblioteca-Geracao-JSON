@@ -8,7 +8,7 @@ interface JsonArrayBuilder {
 
     fun add(numb: Int) : JsonArrayBuilder
 
-    fun add(bool: Boolean) : JsonArrayBuilder
+    fun add(value: Boolean) : JsonArrayBuilder
 
     fun addNull() : JsonArrayBuilder
 

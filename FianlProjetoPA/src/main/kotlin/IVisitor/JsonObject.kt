@@ -14,5 +14,7 @@ interface JsonObject : JsonStructure, Map<String, JsonValue>{
 
     fun getMap() : Map<String, JsonValue>
 
+    fun acceptJson(visitor :VisitorTree)
+
 
 }

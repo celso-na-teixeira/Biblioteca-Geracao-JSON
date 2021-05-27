@@ -1,14 +1,12 @@
 package Tree
 
-import IVisitor.JsonObject
+import BuilderImpl.JsonObjectBuilderImpl
+import IVisitor.*
 import org.eclipse.swt.SWT
 import org.eclipse.swt.events.SelectionAdapter
 import org.eclipse.swt.events.SelectionEvent
 import org.eclipse.swt.layout.GridLayout
 import org.eclipse.swt.widgets.*
-import java.io.File
-import java.util.*
-import kotlin.reflect.jvm.internal.impl.load.java.lazy.descriptors.DeclaredMemberIndex
 
 class TreeSkeleton {
     val shell: Shell
@@ -59,14 +57,15 @@ class TreeSkeleton {
     fun open(joson : JsonObject) {
 
         var counter : Int = 0
-        var a = TreeItem(tree, SWT.NONE)
-        a.text = "joson"
-        a.data = joson
+        var treeItem = TreeItem(tree, SWT.NONE)
+        treeItem.text = "(Object)"
+        treeItem.data = joson
         // criar a arvore com workitem
-        popularTreeItem(joson, a)
+        popularTreeItem(joson, treeItem)
         tree.expandAll()
         shell.pack()
         shell.open()
+
         val display = Display.getDefault()
         while (!shell.isDisposed) {
             if (!display.readAndDispatch()) display.sleep()
@@ -74,16 +73,54 @@ class TreeSkeleton {
         display.dispose()
     }
 
-    fun popularTreeItem(joson : JsonObject, t : TreeItem){
-        var newRoot = TreeItem(t, SWT.NONE)
-        newRoot.text = "(object)"
-        newRoot.data = joson
+    fun popularTreeItem(joson : JsonObject, treeItem : TreeItem){
 
-        /*if (file.isDirectory){
-            file.listFiles().forEach {
-                popularTreeItem(it, newRoot)
+        val visitor = object : Visitor {
+            var current = treeItem
+
+            override fun visit(var1: JsonString) {
+                var newRoot = TreeItem(current, SWT.NONE)
+                newRoot.text = "(children)"
+                newRoot.data = var1
             }
-        }*/
+            override fun visit(var1: JsonNumber) {
+                var newRoot = TreeItem(current, SWT.NONE)
+                newRoot.text = "(children)"
+                newRoot.data = var1
+
+            }
+            override fun visit(var1: JsonValue) {
+                    var newRoot = TreeItem(current, SWT.NONE)
+                    newRoot.text = "(children)"
+                    newRoot.data = var1
+
+            }
+
+            override fun visit(var1 : JsonObject) : Boolean{
+                var newRoot = TreeItem(current, SWT.NONE)
+                newRoot.text = "(Object)"
+                newRoot.data = var1 as JsonObjectBuilderImpl.JsonObjectImpl
+                current = newRoot
+
+                return true
+            }
+            override fun visit(var1 : JsonArray) : Boolean{
+                var newRoot = TreeItem(current, SWT.NONE)
+                newRoot.text = "(children)"
+                newRoot.data = var1
+                current = newRoot
+                return true
+            }
+
+            override fun endVisit(c: JsonObject) {
+                current = current.parentItem
+            }
+            override fun endVisit(c: JsonArray) {
+                current = current.parentItem
+            }
+        }
+
+        joson.accept(visitor)
     }
 
     fun Tree.expandAll() = traverse { it.expanded = true }

@@ -69,6 +69,14 @@ class JsonObjectBuilderImpl : JsonObjectBuilder {
                  return valueMap
              }
 
+             override fun acceptJson(visitor: VisitorTree) {
+                 if(visitor.visit(this))
+                     this.valueMap.forEach{
+                         visitor.visit(it.key, it.value)
+                     }
+                 visitor.endVisit(this)
+             }
+
 
              override fun getJsonArray(str: String): JsonArray {
                  return valueMap.get(str) as JsonArray

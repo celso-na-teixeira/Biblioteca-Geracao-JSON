@@ -1,13 +1,15 @@
+import Tree.TreeSkeleton
 import school.ClassRoom
 import school.Lesson
 import school.Student
 import school.StudentType
+import java.time.LocalDateTime
 import java.util.*
 
 class MainClass
 
 fun main() {
-
+    println(LocalDateTime.now())
     val lesson = Lesson(name = "PA", 1)
     val lesson2 = Lesson(name = "MAT", 2)
     val lesson3 = Lesson(name = "HIST", 3)
@@ -25,18 +27,18 @@ fun main() {
 
 
     val rex = Reflex()
-    //var model3 = rex.reflectionInference(student)
+    var model3 = rex.reflectionInference(lesson)
     //model3.getMap().forEach { t, u -> }
-    //println(model3)
+    println(model3)
     //teste(StudentType.Bachelor)
-    //TreeSkeleton().open(model3)
+    TreeSkeleton().open(model3)
 
     //teste search
     //val list1 = rex.getAllStrings(student)
     //list1.forEach { t -> println(t) }
-    println("______________________________________")
+    /*println("______________________________________")
     val list = rex.getAllContains(student, "son")
-    list.forEach { t -> println(t) }
+    list.forEach { t -> println(t) }*/
 
 
 }
