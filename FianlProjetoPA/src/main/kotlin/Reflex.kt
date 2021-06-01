@@ -1,4 +1,3 @@
-import BuilderImpl.JsonObjectBuilderImpl
 import IVisitor.*
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
@@ -111,5 +110,8 @@ class Reflex {
         return visitor.map
     }
 
+    fun getJson(){
+
+    }
 
 }

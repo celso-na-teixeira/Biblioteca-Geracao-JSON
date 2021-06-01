@@ -2,6 +2,7 @@ package BuilderImpl
 
 import IVisitor.JsonString
 import IVisitor.JsonValue
+import IVisitor.JsonVisitor
 import IVisitor.Visitor
 
 class JsonStringImpl : JsonString {
@@ -26,6 +27,14 @@ class JsonStringImpl : JsonString {
 
     override fun accept(v: Visitor) {
         v.visit(this)
+    }
+
+    override fun accept(v: JsonVisitor) {
+        v.visit(this)
+    }
+
+    override fun accept(key: String, v: JsonVisitor) {
+        v.visit(key,this)
     }
 
     override fun equals(other: Any?): Boolean {

@@ -7,6 +7,14 @@ interface JsonValue  {
                 v.visit(this)
             }
 
+            override fun accept(v: JsonVisitor) {
+                v.visit(this)
+            }
+
+            override fun accept(key: String, v: JsonVisitor) {
+                v.visit(key,this)
+            }
+
             override fun getValueType(): ValueType = JsonValue.ValueType.NULL
 
             override fun toString(): String {
@@ -26,6 +34,14 @@ interface JsonValue  {
         val TRUE: JsonValue = object : JsonValue {
             override fun accept(v: Visitor) {
                 v.visit(this)
+            }
+
+            override fun accept(v: JsonVisitor) {
+                v.visit(this)
+            }
+
+            override fun accept(key: String, v: JsonVisitor) {
+                v.visit(key,this)
             }
 
             override fun getValueType(): ValueType = JsonValue.ValueType.TRUE
@@ -49,6 +65,14 @@ interface JsonValue  {
                 v.visit(this)
             }
 
+            override fun accept(v: JsonVisitor) {
+                v.visit(this)
+            }
+
+            override fun accept(key: String, v: JsonVisitor) {
+                v.visit(key,this)
+            }
+
             override fun getValueType(): ValueType = JsonValue.ValueType.FALSE
 
             override fun toString(): String {
@@ -67,6 +91,10 @@ interface JsonValue  {
     }
 
     fun accept(v : Visitor)
+
+    fun accept(v : JsonVisitor)
+
+    fun accept(key : String, v : JsonVisitor)
 
     fun getValueType() : ValueType
 

@@ -2,6 +2,7 @@ package BuilderImpl
 
 import IVisitor.JsonNumber
 import IVisitor.JsonValue
+import IVisitor.JsonVisitor
 import IVisitor.Visitor
 
 class JsonNumberImpl : JsonNumber {
@@ -29,6 +30,14 @@ class JsonNumberImpl : JsonNumber {
 
     override fun accept(v: Visitor) {
         v.visit(this)
+    }
+
+    override fun accept(v: JsonVisitor) {
+        v.visit(this)
+    }
+
+    override fun accept(key: String, v: JsonVisitor) {
+        v.visit(key,this)
     }
 
     override fun equals(other: Any?): Boolean {

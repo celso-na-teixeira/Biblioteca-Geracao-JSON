@@ -12,10 +12,6 @@ companion object{
         return JsonProvider.provider().createObjectBuilder()
     }
 
-    fun createBuilderFactory(conf : Map<String, Any?>) : JsonBuilderFactory{
-        return JsonProvider.provider().createBuilderFactory(conf)
-    }
-
 
 }
 }

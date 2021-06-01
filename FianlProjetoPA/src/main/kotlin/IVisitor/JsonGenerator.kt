@@ -9,8 +9,6 @@ interface JsonGenerator {
 
     fun writeStartArray(var1 : String) : JsonGenerator;
 
-    fun write(var1 : String, var2: JsonValue) : JsonGenerator;
-
     fun write(var1 : String, var2 : String) : JsonGenerator;
 
     fun write(var1 : String, var2 : Double ) : JsonGenerator;
@@ -20,8 +18,6 @@ interface JsonGenerator {
     fun write(var1 : String, var2 : Boolean) : JsonGenerator;
 
     fun writeNull(var1 : String) : JsonGenerator;
-
-    fun write(var1 : JsonValue) : JsonGenerator;
 
     fun write(var1 : String) : JsonGenerator;
 

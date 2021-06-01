@@ -1,10 +1,123 @@
-import BuilderImpl.JsonArrayBuilderImpl
-import BuilderImpl.JsonObjectBuilderImpl
 import IVisitor.*
 import java.lang.StringBuilder
 
 class JsonGeneratorImpl : JsonGenerator {
     val strg : StringBuilder = StringBuilder()
+
+    fun getJsonString(model: JsonObject) :String{
+        model.accept(visitor)
+        return strg.toString()
+    }
+    //-------------------------------------------------------------------
+    val visitor = object : JsonVisitor{
+
+        override fun visit(var1: JsonString) {
+            write(var1.getString())
+        }
+        override fun visit(key :String, value: JsonString) {
+            write(key, value.getString())
+        }
+
+        override fun visit(var1: JsonNumber) {
+            writevalue(var1.toString())
+        }
+        override fun visit(key :String, var1: JsonNumber) {
+            writevalue(key, var1.toString())
+        }
+
+        override fun visit(obj: JsonValue) {
+            when(obj.getValueType()){
+                JsonValue.ValueType.ARRAY -> {
+                    visit(obj as JsonArray)
+                }
+                JsonValue.ValueType.OBJECT -> {
+                    visit(obj as JsonObject)
+                }
+                JsonValue.ValueType.STRING -> {
+                    visit(obj as JsonString)
+                }
+                JsonValue.ValueType.NUMBER -> {
+                    visit(obj as JsonNumber)
+                }
+                JsonValue.ValueType.TRUE -> {
+                    write(true)
+                }
+                JsonValue.ValueType.FALSE -> {
+                    write(false)
+                }
+                JsonValue.ValueType.NULL -> {
+                    writeNull()
+                }
+            }
+        }
+        override fun visit(key :String, value: JsonValue) {
+            when(value.getValueType()){
+                JsonValue.ValueType.ARRAY -> {
+                    visit(key , value as JsonArray)
+                }
+                JsonValue.ValueType.OBJECT -> {
+                    visit(key , value as JsonObject)
+                }
+                JsonValue.ValueType.STRING -> {
+                    visit(key , value as JsonString)
+                }
+                JsonValue.ValueType.NUMBER -> {
+                    visit(key , value as JsonNumber)
+                }
+                JsonValue.ValueType.TRUE -> {
+                    write(key, true)
+                }
+                JsonValue.ValueType.FALSE -> {
+                    write(key, false)
+                }
+                JsonValue.ValueType.NULL -> {
+                    writeNull(key)
+                }
+            }
+        }
+        override fun visit(key :String, value: JsonObject): Boolean {
+            if (JsonValue.ValueType.OBJECT.equals(value.getValueType())){
+                writeStartObject(key)
+                return true
+            }
+            return false
+        }
+
+        override fun visit(key :String, value: JsonArray) : Boolean {
+            if (JsonValue.ValueType.ARRAY.equals(value.getValueType())){
+                writeStartArray(key)
+                return true
+            }
+            return false
+        }
+
+        override fun visit(obj: JsonObject) : Boolean {
+            if (JsonValue.ValueType.OBJECT.equals(obj.getValueType())){
+                writeStartObject()
+                return true
+            }
+            return false
+        }
+
+        override fun visit(var1: JsonArray) : Boolean {
+            if (JsonValue.ValueType.ARRAY.equals(var1.getValueType())){
+                writeStartArray()
+                return true
+            }
+            return false
+        }
+
+        override fun endVisit(c: JsonObject) {
+            writeEndObject()
+
+        }
+
+        override fun endVisit(c: JsonArray) {
+            writeEndArray()
+        }
+
+
+    }
     //___________________________________________________________________
     override fun writeStartObject(): JsonGenerator {
         this.writeComma()
@@ -30,52 +143,7 @@ class JsonGeneratorImpl : JsonGenerator {
         return this
     }
 
-    override fun write(name: String, value: JsonValue): JsonGenerator {
-        when(value.getValueType()){
-            JsonValue.ValueType.ARRAY -> {
-                var arr : JsonArray = value as JsonArray
-                this.writeStartArray(name)
-                var iterator = arr.iterator()
 
-                while (iterator.hasNext()){
-                    var child = iterator.next() as JsonValue
-                    this.write(child)
-                }
-                this.writeEndArray()
-            }
-            JsonValue.ValueType.OBJECT -> {
-                var obj : JsonObject = value as JsonObject
-                this.writeStartObject(name)
-                var iterator = (obj.getJsonObject() as Map<String,JsonValue>).entries.iterator()
-
-                while (iterator.hasNext()){
-                    var member = iterator.next()
-                    this.write(member.key, member.value)
-                }
-                this.writeEndObject()
-            }
-            JsonValue.ValueType.STRING -> {
-                var str : JsonString = value as JsonString
-
-                this.write(name, str.getString())
-            }
-            JsonValue.ValueType.NUMBER -> {
-                var numb : JsonNumber = value as JsonNumber
-
-                this.writevalue(name, numb.toString())
-            }
-            JsonValue.ValueType.TRUE -> {
-                this.write(name, true)
-            }
-            JsonValue.ValueType.FALSE -> {
-                this.write(name, false)
-            }
-            JsonValue.ValueType.NULL -> {
-                this.writeNull(name)
-            }
-        }
-        return this
-    }
 
     override fun write(var1: String, var2: String): JsonGenerator {
         this.writeName(var1)
@@ -100,54 +168,6 @@ class JsonGeneratorImpl : JsonGenerator {
         this.strg.append(var2)
         return this
     }
-
-    override fun write(var1: JsonValue): JsonGenerator {
-        when(var1.getValueType()){
-            JsonValue.ValueType.ARRAY -> {
-                var arr : JsonArray = var1 as JsonArray
-                this.writeStartArray()
-                var iterator = arr.iterator()
-
-                while (iterator.hasNext()){
-                    var child = iterator.next() as JsonValue
-                    this.write(child)
-                }
-                this.writeEndArray()
-            }
-            JsonValue.ValueType.OBJECT -> {
-                var obj : JsonObject = var1 as JsonObject
-                this.writeStartObject()
-                var iterator = (obj.getJsonObject() as Map<String,JsonValue>).entries.iterator()
-
-                while (iterator.hasNext()){
-                    var member = iterator.next()
-                    this.write(member.key, member.value)
-                }
-                this.writeEndObject()
-            }
-            JsonValue.ValueType.STRING -> {
-                var str : JsonString = var1 as JsonString
-
-                this.write(str.getString())
-            }
-            JsonValue.ValueType.NUMBER -> {
-                var numb : JsonNumber = var1 as JsonNumber
-
-                this.writevalue(numb.toString())
-            }
-            JsonValue.ValueType.TRUE -> {
-                this.write(true)
-            }
-            JsonValue.ValueType.FALSE -> {
-                this.write(false)
-            }
-            JsonValue.ValueType.NULL -> {
-                this.writeNull()
-            }
-        }
-        return this
-    }
-
     override fun write(var1: String): JsonGenerator {
         this.writeComma()
         this.strg.append("\"").append(var1).append("\"")
@@ -185,12 +205,17 @@ class JsonGeneratorImpl : JsonGenerator {
     }
 
     private fun writeComma(){
-        if (strg.isNotEmpty())
-            this.strg.append(",")
+
+        if (strg.isNotEmpty()) {
+            val asp = strg.toString().substring(strg.toString().length -1, strg.toString().length)
+            if (!asp.equals("{") && !asp.equals("["))
+                this.strg.append(",")
+
+        }
     }
 
     private fun writeName(var1 : String) : JsonGenerator{
-        writeComma()
+        this.writeComma()
         this.strg.append("\"").append(var1).append("\"").append(":")
         return this
     }
@@ -200,7 +225,6 @@ class JsonGeneratorImpl : JsonGenerator {
         this.strg.append(value)
     }
     private fun writevalue(name : String, value : String){
-        this.writeComma()
         this.writeName(name)
         this.strg.append(value)
     }

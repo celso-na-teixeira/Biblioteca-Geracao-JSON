@@ -92,6 +92,22 @@ class JsonArrayBuilderImpl : JsonArrayBuilder {
                 }
             return v.endVisit(this)
         }
+
+        override fun accept(v: JsonVisitor) {
+            if (v.visit(this))
+                valueList.forEach {
+                    it.accept(v)
+                }
+             v.endVisit(this)
+        }
+
+        override fun accept(key: String, v: JsonVisitor) {
+            if (v.visit(key,this))
+                valueList.forEach {
+                    it.accept(v)
+                }
+            v.endVisit(this)
+        }
     }
 
 

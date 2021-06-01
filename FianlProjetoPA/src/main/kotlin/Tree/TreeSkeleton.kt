@@ -1,6 +1,6 @@
 package Tree
 
-import BuilderImpl.JsonObjectBuilderImpl
+import BuilderImpl.JsonObjectImpl
 import IVisitor.*
 import org.eclipse.swt.SWT
 import org.eclipse.swt.events.SelectionAdapter
@@ -99,7 +99,7 @@ class TreeSkeleton {
             override fun visit(var1 : JsonObject) : Boolean{
                 var newRoot = TreeItem(current, SWT.NONE)
                 newRoot.text = "(Object)"
-                newRoot.data = var1 as JsonObjectBuilderImpl.JsonObjectImpl
+                newRoot.data = var1 as JsonObjectImpl
                 current = newRoot
 
                 return true

@@ -1,10 +1,7 @@
-import Tree.TreeSkeleton
-import school.ClassRoom
 import school.Lesson
 import school.Student
 import school.StudentType
 import java.time.LocalDateTime
-import java.util.*
 
 class MainClass
 
@@ -27,11 +24,12 @@ fun main() {
 
 
     val rex = Reflex()
-    var model3 = rex.reflectionInference(lesson)
-    //model3.getMap().forEach { t, u -> }
-    println(model3)
+    var model3 = rex.reflectionInference(student)
+    val jsonGeneratorImpl = JsonGeneratorImpl()
+    println(jsonGeneratorImpl.getJsonString(model3))
+
     //teste(StudentType.Bachelor)
-    TreeSkeleton().open(model3)
+    //TreeSkeleton().open(model3)
 
     //teste search
     //val list1 = rex.getAllStrings(student)
@@ -41,6 +39,8 @@ fun main() {
     list.forEach { t -> println(t) }*/
 
 
+
 }
+
 
 
