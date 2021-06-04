@@ -89,10 +89,6 @@ class Reflex {
                 return true
             }
             override fun visit(var1 : JsonArray) : Boolean{
-                /*var1.forEach {
-                    if (JsonValue.ValueType.OBJECT.equals(it.getValueType()))
-                        map.add(it)
-                }*/
                 return true
             }
 
@@ -108,10 +104,6 @@ class Reflex {
 
         model.accept(visitor)
         return visitor.map
-    }
-
-    fun getJson(){
-
     }
 
 }

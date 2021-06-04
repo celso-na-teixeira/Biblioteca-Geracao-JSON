@@ -236,24 +236,4 @@ class JsonGeneratorImpl : JsonGenerator {
         this.strg.append("}")
     }
 
-    private fun format(str : String) : String{
-        val builder : StringBuilder = StringBuilder()
-
-        if (str.isNotEmpty())
-            return String().orEmpty()
-        val c = 0
-        val len = str.length
-
-        builder.append('"')
-        for ( i in 0..len){
-            var c = str.get(i)
-            when(c){
-
-            }
-
-        }
-
-        return builder.toString()
-    }
-
 }
